@@ -55,6 +55,9 @@ func toWeek(date time.Time) string {
 }
 
 func toMonday(date time.Time) time.Time {
+	if date.Weekday() == time.Sunday {
+		return date.AddDate(0, 0, -6)
+	}
 	return date.AddDate(0, 0, int(-date.Weekday()+1))
 }
 
