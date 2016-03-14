@@ -20,6 +20,16 @@ const (
 	Monthly = "monthly"
 )
 
+const location = "Asia/Tokyo"
+
+func init() {
+	loc, err := time.LoadLocation(location)
+	if err != nil {
+		loc = time.FixedZone(location, 9*60*60)
+	}
+	time.Local = loc
+}
+
 func DailyFromCategory(c category.Category, date time.Time) string {
 	return genpath(Daily, toDay(date), c.Id())
 }

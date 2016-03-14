@@ -19,6 +19,16 @@ var (
 	noentries bool
 )
 
+const location = "Asia/Tokyo"
+
+func setJST() {
+	loc, err := time.LoadLocation(location)
+	if err != nil {
+		loc = time.FixedZone(location, 9*60*60)
+	}
+	time.Local = loc
+}
+
 func init() {
 	flag.IntVar(&year, "year", 0, "year")
 	flag.IntVar(&month, "month", 0, "month")
@@ -26,6 +36,7 @@ func init() {
 	flag.StringVar(&period, "period", "daily", "period[daily|weekly|monthly]")
 	flag.BoolVar(&noentries, "noentries", false, "noentries")
 	flag.Parse()
+	setJST()
 }
 
 func main() {
