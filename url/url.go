@@ -81,7 +81,7 @@ func toMonday(date time.Time) time.Time {
 }
 
 func toMonth(date time.Time) string {
-	return toMonday(date).Format("200601")
+	return date.Format("200601")
 }
 
 func genpath(period, date, category string) string {
