@@ -20,14 +20,21 @@ const (
 	Monthly = "monthly"
 )
 
-const location = "Asia/Tokyo"
+const locationStr = "Asia/Tokyo"
+
+var location *time.Location
 
 func init() {
-	loc, err := time.LoadLocation(location)
+	location = loc()
+	time.Local = location
+}
+
+func loc() *time.Location {
+	loc, err := time.LoadLocation(locationStr)
 	if err != nil {
-		loc = time.FixedZone(location, 9*60*60)
+		loc = time.FixedZone(locationStr, 9*60*60)
 	}
-	time.Local = loc
+	return loc
 }
 
 func DailyFromCategory(c category.Category, date time.Time) string {
@@ -53,7 +60,9 @@ func MonthlyFromCategory(c category.Category, date time.Time) string {
 }
 
 func MonthlyFromCategoryLatest(c category.Category) string {
-	return MonthlyFromCategory(c, time.Now().AddDate(0, -1, 0))
+	n := time.Now()
+	d := time.Date(n.Year(), n.Month()-1, 1, 0, 0, 0, 0, location)
+	return MonthlyFromCategory(c, d)
 }
 
 func toDay(date time.Time) string {
